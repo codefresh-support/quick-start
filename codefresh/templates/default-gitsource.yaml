@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: default-gitsource
+  labels:
+    codefresh.io/entity: 'git-source'
+    codefresh.io/internal: 'false'
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: ${gitsource_repo_url}
+    path: ${gitsource_repo_path}
+    targetRevision: ${gitsource_repo_branch}
+    directory:
+      include: '*'
+      exclude: ''
+      recurse: true
+  destination:
+    namespace: ${gitsource_namespace}
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
