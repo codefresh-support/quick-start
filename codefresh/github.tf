@@ -25,13 +25,27 @@ resource "github_repository_file" "git_source" {
   repository          = github_repository.codefresh_isc.name
   commit_message      = "[Terraform] Add Git Source Application"
   overwrite_on_create = true
-  file                = "resources/runtimes/${minikube_cluster.demo_cluster.cluster_name}/default-gitsource.yaml"
+  file                = "resources/${minikube_cluster.demo_cluster.cluster_name}/default-gitsource.yaml"
 
   content = templatefile("${path.module}/templates/default-gitsource.yaml", {
-    gitsource_repo_url    = github_repository.codefresh_apps.http_clone_url,
-    gitsource_repo_path   = "apps"
-    gitsource_namespace   = helm_release.codefresh_gitops_runtime.namespace
-    gitsource_repo_branch = "main"
+    repoUrl    = github_repository.codefresh_apps.http_clone_url,
+    repoPath   = "apps"
+    namespace  = helm_release.codefresh_gitops_runtime.namespace
+    repoBranch = "main"
+  })
+
+}
+
+resource "github_repository_file" "in_cluster" {
+  repository          = github_repository.codefresh_isc.name
+  commit_message      = "[Terraform] Update In-Cluster Application"
+  overwrite_on_create = true
+  file                = "runtimes/${minikube_cluster.demo_cluster.cluster_name}/in-cluster.yaml"
+
+  content = templatefile("${path.module}/templates/in-cluster.yaml", {
+    repoUrl     = github_repository.codefresh_isc.http_clone_url,
+    runtimeName = minikube_cluster.demo_cluster.cluster_name
+    namespace   = helm_release.codefresh_gitops_runtime.namespace
   })
 
 }

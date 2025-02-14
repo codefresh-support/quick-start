@@ -2,7 +2,7 @@ resource "helm_release" "codefresh_pipelines_runtime" {
   name             = "codefresh-classic"
   repository       = "oci://quay.io/codefresh"
   chart            = "cf-runtime"
-  version          = "6.4.2"
+  version          = "7.5.3"
   namespace        = "cf-pipelines"
   create_namespace = true
   timeout          = 600

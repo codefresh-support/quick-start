@@ -2,19 +2,19 @@ terraform {
   required_providers {
     github = {
       source  = "integrations/github"
-      version = "6.3.0"
+      version = "6.5.0"
     }
     codefresh = {
       source  = "codefresh-io/codefresh"
-      version = "0.11.0"
+      version = "0.12.0"
     }
     minikube = {
       source  = "scott-the-programmer/minikube"
-      version = "0.4.0"
+      version = "0.4.4"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "2.15.0"
+      version = "2.17.0"
     }
   }
   backend "local" {

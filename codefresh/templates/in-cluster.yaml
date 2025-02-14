@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    codefresh.io/entity: internal-config
+    codefresh.io/internal: 'true'
+  name: in-cluster
+spec:
+  destination:
+    namespace: ${namespace}
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    directory:
+      include: >-
+        {all-runtimes-all-clusters/**/*.yaml,all-runtimes-all-clusters/*.yaml,control-planes/**/*.yaml,control-planes/*.yaml,runtimes/${runtimeName}/**/*.yaml,runtimes/${runtimeName}/*.yaml,${runtimeName}/default-gitsource.yaml}
+      recurse: true
+    path: resources
+    repoURL: ${repoUrl}
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - allowEmpty=true
